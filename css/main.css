@@ -462,6 +462,7 @@ a:hover {
   position: relative;
   padding-left: 2rem;
   padding-left: var(--spacing-xl);
+  margin-bottom: 2rem;
 }
 
 .timeline-item::before {
