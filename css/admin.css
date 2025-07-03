@@ -594,3 +594,12 @@
 .admin-gap-2 { gap: 1rem; }
 .admin-gap-3 { gap: 1.5rem; }
 
+/* Hide backup dialog by default */
+#backup-dialog {
+  display: none !important;
+}
+
+#backup-dialog:not(.admin-hidden) {
+  display: flex !important;
+}
+
