@@ -490,6 +490,11 @@ a:hover {
 
 .timeline-description {
   color: var(--text-light);
+  line-height: 1.8;
+}
+
+.timeline-description br {
+  line-height: 1.8;
 }
 
 /* Footer */
