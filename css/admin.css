@@ -587,7 +587,7 @@
 .admin-mt-1 { margin-top: 0.5rem; }
 .admin-mt-2 { margin-top: 1rem; }
 .admin-mt-3 { margin-top: 1.5rem; }
-.admin-hidden { display: none; }
+.admin-hidden { display: none !important;}
 .admin-flex { display: flex; }
 .admin-grid { display: grid; }
 .admin-gap-1 { gap: 0.5rem; }
