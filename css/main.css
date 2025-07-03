@@ -468,7 +468,7 @@ a:hover {
   content: '';
   position: absolute;
   left: -0.5rem;
-  top: 0.5rem;
+  top: 0.125rem;
   width: var(--spacing-md);
   height: var(--spacing-md);
   background: var(--accent-color);
