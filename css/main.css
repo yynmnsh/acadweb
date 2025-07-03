@@ -451,7 +451,7 @@ a:hover {
 .timeline::before {
   content: '';
   position: absolute;
-  left: 0;
+  left: 0.75rem;
   top: 0;
   bottom: 0;
   width: 2px;
@@ -460,15 +460,15 @@ a:hover {
 
 .timeline-item {
   position: relative;
+  padding-left: 2rem;
   padding-left: var(--spacing-xl);
 }
 
 .timeline-item::before {
   content: '';
   position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  left: -0.5rem;
+  top: 0.5rem;
   width: var(--spacing-md);
   height: var(--spacing-md);
   background: var(--accent-color);
