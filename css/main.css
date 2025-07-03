@@ -460,15 +460,15 @@ a:hover {
 
 .timeline-item {
   position: relative;
-  margin-bottom: var(--spacing-2xl);
   padding-left: var(--spacing-xl);
 }
 
 .timeline-item::before {
   content: '';
   position: absolute;
-  left: -var(--spacing-sm);
-  top: var(--spacing-sm);
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
   width: var(--spacing-md);
   height: var(--spacing-md);
   background: var(--accent-color);
@@ -478,9 +478,9 @@ a:hover {
 }
 
 .timeline-date {
+  margin: 0 0 var(--spacing-sm) 0;
   font-weight: 600;
   color: var(--primary-color);
-  margin-bottom: var(--spacing-sm);
 }
 
 .timeline-title {
@@ -490,11 +490,7 @@ a:hover {
 
 .timeline-description {
   color: var(--text-light);
-  line-height: 1.8;
-}
-
-.timeline-description br {
-  line-height: 1.8;
+  line-height: 1.6;
 }
 
 /* Footer */
