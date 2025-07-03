@@ -1,0 +1,65 @@
+# GitHub Pages configuration
+# This file ensures GitHub Pages serves the site correctly
+
+# Site settings
+title: Academic Website with CMS
+description: Professional academic portfolio with built-in content management system
+url: "" # Will be set automatically by GitHub Pages
+baseurl: "" # Will be set automatically by GitHub Pages
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+# Exclude files from processing
+exclude:
+  - README.md
+  - .gitignore
+  - .github/
+  - node_modules/
+  - package*.json
+
+# Include hidden files that should be served
+include:
+  - .htaccess
+
+# Plugin settings
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+
+# Collections (if needed in future)
+collections_dir: collections
+
+# Sass settings
+sass:
+  style: compressed
+  sass_dir: _sass
+
+# Security settings
+safe: true
+incremental: false
+lsi: false
+
+# Serving settings
+host: 0.0.0.0
+port: 4000
+detach: false
+show_dir_listing: false
+
+# Conversion settings
+markdown_ext: "markdown,mkdown,mkdn,mkd,md"
+textile_ext: "textile"
+
+# Markdown processing
+kramdown:
+  input: GFM
+  hard_wrap: false
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+  enable_coderay: false
+

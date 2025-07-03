@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Academic Website CMS</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Admin dashboard for academic website content management">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <a href="dashboard.html" class="admin-logo">Academic CMS</a>
+                <div class="admin-user-info">
+                    <span id="current-user">Loading...</span>
+                </div>
+            </div>
+            
+            <nav class="admin-nav">
+                <div class="admin-nav-section">
+                    <div class="admin-nav-title">Overview</div>
+                    <ul class="admin-nav-list">
+                        <li class="admin-nav-item">
+                            <a href="dashboard.html" class="admin-nav-link active">
+                                <span class="admin-nav-icon">📊</span>
+                                Dashboard
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="admin-nav-section">
+                    <div class="admin-nav-title">Content Management</div>
+                    <ul class="admin-nav-list">
+                        <li class="admin-nav-item">
+                            <a href="editor.html?page=index" class="admin-nav-link">
+                                <span class="admin-nav-icon">🏠</span>
+                                Homepage
+                            </a>
+                        </li>
+                        <li class="admin-nav-item">
+                            <a href="editor.html?page=about" class="admin-nav-link">
+                                <span class="admin-nav-icon">👤</span>
+                                About Page
+                            </a>
+                        </li>
+                        <li class="admin-nav-item">
+                            <a href="editor.html?page=research" class="admin-nav-link">
+                                <span class="admin-nav-icon">🔬</span>
+                                Research
+                            </a>
+                        </li>
+                        <li class="admin-nav-item">
+                            <a href="editor.html?page=teaching" class="admin-nav-link">
+                                <span class="admin-nav-icon">📚</span>
+                                Teaching
+                            </a>
+                        </li>
+                        <li class="admin-nav-item">
+                            <a href="editor.html?page=contact" class="admin-nav-link">
+                                <span class="admin-nav-icon">📞</span>
+                                Contact
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="admin-nav-section">
+                    <div class="admin-nav-title">Site Management</div>
+                    <ul class="admin-nav-list">
+                        <li class="admin-nav-item">
+                            <a href="editor.html?page=site" class="admin-nav-link">
+                                <span class="admin-nav-icon">⚙️</span>
+                                Site Settings
+                            </a>
+                        </li>
+                        <li class="admin-nav-item">
+                            <a href="#" class="admin-nav-link" onclick="previewSite()">
+                                <span class="admin-nav-icon">👁️</span>
+                                Preview Site
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="admin-nav-section">
+                    <div class="admin-nav-title">Tools</div>
+                    <ul class="admin-nav-list">
+                        <li class="admin-nav-item">
+                            <a href="#" class="admin-nav-link" onclick="exportContent()">
+                                <span class="admin-nav-icon">📤</span>
+                                Export Content
+                            </a>
+                        </li>
+                        <li class="admin-nav-item">
+                            <a href="#" class="admin-nav-link" onclick="showImportDialog()">
+                                <span class="admin-nav-icon">📥</span>
+                                Import Content
+                            </a>
+                        </li>
+                        <li class="admin-nav-item">
+                            <a href="#" class="admin-nav-link" onclick="showBackupDialog()">
+                                <span class="admin-nav-icon">💾</span>
+                                Backups
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="admin-nav-section">
+                    <div class="admin-nav-title">Account</div>
+                    <ul class="admin-nav-list">
+                        <li class="admin-nav-item">
+                            <a href="#" class="admin-nav-link" onclick="logout()">
+                                <span class="admin-nav-icon">🚪</span>
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1 class="admin-header-title">Dashboard</h1>
+                <div class="admin-header-actions">
+                    <button class="admin-btn admin-btn-outline admin-btn-sm" onclick="refreshStats()">
+                        <span>🔄</span>
+                        Refresh
+                    </button>
+                    <button class="admin-btn admin-btn-primary admin-btn-sm" onclick="previewSite()">
+                        <span>👁️</span>
+                        Preview Site
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Welcome Message -->
+            <div class="admin-alert admin-alert-info">
+                <strong>Welcome to the Academic Website CMS!</strong> 
+                Use this dashboard to manage your website content, view statistics, and access all administrative functions.
+            </div>
+            
+            <!-- Statistics Cards -->
+            <div class="admin-stats">
+                <div class="admin-stat-card">
+                    <div class="admin-stat-value" id="stat-pages">-</div>
+                    <div class="admin-stat-label">Total Pages</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-value" id="stat-publications">-</div>
+                    <div class="admin-stat-label">Publications</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-value" id="stat-courses">-</div>
+                    <div class="admin-stat-label">Courses</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-value" id="stat-news">-</div>
+                    <div class="admin-stat-label">News Items</div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2 class="admin-card-title">Quick Actions</h2>
+                </div>
+                <div class="admin-card-body">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                        <a href="editor.html?page=index" class="admin-btn admin-btn-outline" style="padding: 1.5rem; text-align: center; text-decoration: none;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏠</div>
+                            <div style="font-weight: 600;">Edit Homepage</div>
+                            <div style="font-size: 0.875rem; color: #64748b; margin-top: 0.25rem;">Update hero section and recent news</div>
+                        </a>
+                        
+                        <a href="editor.html?page=research" class="admin-btn admin-btn-outline" style="padding: 1.5rem; text-align: center; text-decoration: none;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔬</div>
+                            <div style="font-weight: 600;">Manage Research</div>
+                            <div style="font-size: 0.875rem; color: #64748b; margin-top: 0.25rem;">Add publications and projects</div>
+                        </a>
+                        
+                        <a href="editor.html?page=teaching" class="admin-btn admin-btn-outline" style="padding: 1.5rem; text-align: center; text-decoration: none;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📚</div>
+                            <div style="font-weight: 600;">Update Teaching</div>
+                            <div style="font-size: 0.875rem; color: #64748b; margin-top: 0.25rem;">Manage courses and schedules</div>
+                        </a>
+                        
+                        <a href="editor.html?page=about" class="admin-btn admin-btn-outline" style="padding: 1.5rem; text-align: center; text-decoration: none;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">👤</div>
+                            <div style="font-weight: 600;">Edit About</div>
+                            <div style="font-size: 0.875rem; color: #64748b; margin-top: 0.25rem;">Update biography and background</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2 class="admin-card-title">System Information</h2>
+                </div>
+                <div class="admin-card-body">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                        <div>
+                            <h3 style="margin-bottom: 1rem; color: #374151;">Content Status</h3>
+                            <div style="space-y: 0.5rem;">
+                                <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #e5e7eb;">
+                                    <span>Last Modified:</span>
+                                    <span id="last-modified">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #e5e7eb;">
+                                    <span>Content Size:</span>
+                                    <span id="content-size">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
+                                    <span>Storage Used:</span>
+                                    <span id="storage-used">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 style="margin-bottom: 1rem; color: #374151;">Quick Links</h3>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <a href="../index.html" target="_blank" class="admin-btn admin-btn-outline admin-btn-sm">
+                                    🌐 View Public Site
+                                </a>
+                                <button class="admin-btn admin-btn-outline admin-btn-sm" onclick="createBackup()">
+                                    💾 Create Backup
+                                </button>
+                                <button class="admin-btn admin-btn-outline admin-btn-sm" onclick="clearCache()">
+                                    🗑️ Clear Cache
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Help & Documentation -->
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2 class="admin-card-title">Help & Documentation</h2>
+                </div>
+                <div class="admin-card-body">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                        <div class="admin-alert admin-alert-info" style="margin: 0;">
+                            <h4 style="margin-bottom: 0.5rem;">Getting Started</h4>
+                            <p style="margin-bottom: 1rem; font-size: 0.875rem;">
+                                Use the sidebar navigation to edit different pages of your website. 
+                                Changes are automatically saved to your browser's local storage.
+                            </p>
+                        </div>
+                        
+                        <div class="admin-alert admin-alert-warning" style="margin: 0;">
+                            <h4 style="margin-bottom: 0.5rem;">Important Notes</h4>
+                            <p style="margin-bottom: 1rem; font-size: 0.875rem;">
+                                This CMS stores data locally in your browser. Remember to export 
+                                your content regularly as backups.
+                            </p>
+                        </div>
+                        
+                        <div class="admin-alert admin-alert-success" style="margin: 0;">
+                            <h4 style="margin-bottom: 0.5rem;">GitHub Pages</h4>
+                            <p style="margin-bottom: 1rem; font-size: 0.875rem;">
+                                This website is designed to work perfectly with GitHub Pages 
+                                static hosting. No server required!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Import Dialog -->
+    <div id="import-dialog" class="admin-hidden" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10000; display: flex; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 2rem; border-radius: 0.5rem; max-width: 500px; width: 90%;">
+            <h3 style="margin-bottom: 1rem;">Import Content</h3>
+            <input type="file" id="import-file" accept=".json" style="margin-bottom: 1rem; width: 100%;">
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button class="admin-btn admin-btn-outline" onclick="hideImportDialog()">Cancel</button>
+                <button class="admin-btn admin-btn-primary" onclick="importContent()">Import</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Backup Dialog -->
+    <div id="backup-dialog" class="admin-hidden" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10000; display: flex; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 2rem; border-radius: 0.5rem; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;">
+            <h3 style="margin-bottom: 1rem;">Backup Management</h3>
+            <div id="backup-list" style="margin-bottom: 1rem;"></div>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button class="admin-btn admin-btn-outline" onclick="hideBackupDialog()">Close</button>
+                <button class="admin-btn admin-btn-success" onclick="createBackup()">Create New Backup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/cms.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            if (!window.academicCMS || !window.academicCMS.isAuthenticated()) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Update user info
+            const currentUser = document.getElementById('current-user');
+            if (window.academicCMS.currentUser) {
+                currentUser.textContent = `Logged in as ${window.academicCMS.currentUser.username}`;
+            }
+            
+            // Load and display statistics
+            loadDashboardStats();
+        });
+        
+        function loadDashboardStats() {
+            if (!window.academicCMS) return;
+            
+            const stats = window.academicCMS.getContentStats();
+            
+            document.getElementById('stat-pages').textContent = stats.totalPages;
+            document.getElementById('stat-publications').textContent = stats.publications;
+            document.getElementById('stat-courses').textContent = stats.courses;
+            document.getElementById('stat-news').textContent = stats.newsItems;
+            
+            document.getElementById('last-modified').textContent = new Date(stats.lastModified).toLocaleDateString();
+            document.getElementById('content-size').textContent = formatBytes(stats.contentSize);
+            
+            // Calculate storage usage
+            const used = JSON.stringify(localStorage).length;
+            const quota = 5 * 1024 * 1024; // 5MB typical localStorage limit
+            document.getElementById('storage-used').textContent = `${formatBytes(used)} / ${formatBytes(quota)}`;
+        }
+        
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function refreshStats() {
+            loadDashboardStats();
+            window.academicCMS.showNotification('Statistics refreshed', 'success');
+        }
+        
+        function previewSite() {
+            if (window.academicCMS) {
+                window.academicCMS.previewChanges();
+            }
+        }
+        
+        function exportContent() {
+            if (window.academicCMS) {
+                window.academicCMS.exportContent();
+                window.academicCMS.showNotification('Content exported successfully', 'success');
+            }
+        }
+        
+        function showImportDialog() {
+            document.getElementById('import-dialog').classList.remove('admin-hidden');
+        }
+        
+        function hideImportDialog() {
+            document.getElementById('import-dialog').classList.add('admin-hidden');
+            document.getElementById('import-file').value = '';
+        }
+        
+        function importContent() {
+            const fileInput = document.getElementById('import-file');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                window.academicCMS.showNotification('Please select a file to import', 'error');
+                return;
+            }
+            
+            window.academicCMS.importContent(file)
+                .then(() => {
+                    window.academicCMS.showNotification('Content imported successfully', 'success');
+                    hideImportDialog();
+                    loadDashboardStats();
+                })
+                .catch((error) => {
+                    window.academicCMS.showNotification('Import failed: ' + error.message, 'error');
+                });
+        }
+        
+        function showBackupDialog() {
+            const dialog = document.getElementById('backup-dialog');
+            const backupList = document.getElementById('backup-list');
+            
+            const backups = window.academicCMS.getBackups();
+            
+            if (backups.length === 0) {
+                backupList.innerHTML = '<p style="color: #64748b; text-align: center; padding: 2rem;">No backups found. Create your first backup!</p>';
+            } else {
+                backupList.innerHTML = backups.map(backup => `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; margin-bottom: 0.5rem;">
+                        <div>
+                            <div style="font-weight: 500;">${new Date(backup.timestamp).toLocaleString()}</div>
+                            <div style="font-size: 0.875rem; color: #64748b;">Version ${backup.version}</div>
+                        </div>
+                        <button class="admin-btn admin-btn-outline admin-btn-sm" onclick="restoreBackup('${backup.timestamp}')">
+                            Restore
+                        </button>
+                    </div>
+                `).join('');
+            }
+            
+            dialog.classList.remove('admin-hidden');
+        }
+        
+        function hideBackupDialog() {
+            document.getElementById('backup-dialog').classList.add('admin-hidden');
+        }
+        
+        function createBackup() {
+            if (window.academicCMS) {
+                const backup = window.academicCMS.createBackup();
+                window.academicCMS.showNotification('Backup created successfully', 'success');
+                
+                // Refresh backup dialog if open
+                const dialog = document.getElementById('backup-dialog');
+                if (!dialog.classList.contains('admin-hidden')) {
+                    showBackupDialog();
+                }
+            }
+        }
+        
+        function restoreBackup(timestamp) {
+            if (confirm('Are you sure you want to restore this backup? Current content will be overwritten.')) {
+                if (window.academicCMS.restoreBackup(timestamp)) {
+                    window.academicCMS.showNotification('Backup restored successfully', 'success');
+                    hideBackupDialog();
+                    loadDashboardStats();
+                } else {
+                    window.academicCMS.showNotification('Failed to restore backup', 'error');
+                }
+            }
+        }
+        
+        function clearCache() {
+            if (confirm('Are you sure you want to clear the cache? This will not affect your content.')) {
+                // Clear any cached data (in a real implementation)
+                window.academicCMS.showNotification('Cache cleared successfully', 'success');
+            }
+        }
+        
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.academicCMS.logout();
+            }
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Academic Website CMS</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Admin login for academic website content management system">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/admin.css">
+    
+    <!-- Prevent indexing and discovery -->
+    <style>
+        /* Additional security styling */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* Disable right-click context menu */
+        body {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body class="admin-login">
+    <div class="admin-login-card">
+        <div class="admin-login-header">
+            <h1 class="admin-login-title">🔐 Admin Portal</h1>
+            <p class="admin-login-subtitle">Academic Website Content Management System</p>
+        </div>
+        
+        <form id="admin-login-form" class="admin-login-form">
+            <div class="admin-form-group">
+                <label for="username" class="admin-form-label">Username</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    class="admin-form-input" 
+                    required 
+                    autocomplete="username"
+                    placeholder="Enter your username"
+                >
+            </div>
+            
+            <div class="admin-form-group">
+                <label for="password" class="admin-form-label">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    class="admin-form-input" 
+                    required 
+                    autocomplete="current-password"
+                    placeholder="Enter your password"
+                >
+            </div>
+            
+            <div id="login-error" class="admin-alert admin-alert-danger admin-hidden">
+                <strong>Login Failed:</strong> Invalid username or password.
+            </div>
+            
+            <button type="submit" class="admin-btn admin-btn-primary admin-btn-lg">
+                <span id="login-text">Sign In</span>
+                <span id="login-loading" class="admin-loading admin-hidden"></span>
+            </button>
+        </form>
+        
+        <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e2e8f0;">
+            <details style="cursor: pointer;">
+                <summary style="font-size: 0.875rem; color: #64748b; margin-bottom: 1rem;">
+                    Demo Credentials (Click to expand)
+                </summary>
+                <div style="background: #f8fafc; padding: 1rem; border-radius: 0.5rem; font-size: 0.875rem;">
+                    <p style="margin-bottom: 0.5rem;"><strong>Username:</strong> admin</p>
+                    <p style="margin-bottom: 0.5rem;"><strong>Password:</strong> academic2024!</p>
+                    <p style="margin: 0; color: #64748b; font-size: 0.8125rem;">
+                        <em>Alternative: username "professor" with password "research123!"</em>
+                    </p>
+                </div>
+            </details>
+        </div>
+        
+        <div style="margin-top: 2rem; text-align: center;">
+            <a href="../index.html" style="color: #64748b; text-decoration: none; font-size: 0.875rem;">
+                ← Back to Public Website
+            </a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/cms.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('admin-login-form');
+            const loginError = document.getElementById('login-error');
+            const loginText = document.getElementById('login-text');
+            const loginLoading = document.getElementById('login-loading');
+            
+            // Check if already authenticated
+            if (window.academicCMS && window.academicCMS.isAuthenticated()) {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+            
+            // Handle form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                // Show loading state
+                loginText.classList.add('admin-hidden');
+                loginLoading.classList.remove('admin-hidden');
+                loginError.classList.add('admin-hidden');
+                
+                // Simulate network delay for better UX
+                setTimeout(() => {
+                    if (window.academicCMS && window.academicCMS.login(username, password)) {
+                        // Success - redirect to dashboard
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        // Failed - show error
+                        loginError.classList.remove('admin-hidden');
+                        loginText.classList.remove('admin-hidden');
+                        loginLoading.classList.add('admin-hidden');
+                        
+                        // Clear password field
+                        document.getElementById('password').value = '';
+                        document.getElementById('password').focus();
+                    }
+                }, 1000);
+            });
+            
+            // Disable right-click context menu
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+            
+            // Disable F12 and other developer tools shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Disable F12
+                if (e.key === 'F12') {
+                    e.preventDefault();
+                }
+                // Disable Ctrl+Shift+I
+                if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+                    e.preventDefault();
+                }
+                // Disable Ctrl+Shift+J
+                if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+                    e.preventDefault();
+                }
+                // Disable Ctrl+U
+                if (e.ctrlKey && e.key === 'u') {
+                    e.preventDefault();
+                }
+            });
+            
+            // Focus username field on load
+            document.getElementById('username').focus();
+            
+            // Add enter key support for better UX
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') {
+                    loginForm.dispatchEvent(new Event('submit'));
+                }
+            });
+        });
+        
+        // Additional security: Clear sensitive data on page unload
+        window.addEventListener('beforeunload', function() {
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        });
+        
+        // Detect if developer tools are open (basic detection)
+        let devtools = {
+            open: false,
+            orientation: null
+        };
+        
+        setInterval(function() {
+            if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200) {
+                if (!devtools.open) {
+                    devtools.open = true;
+                    console.clear();
+                    console.log('%cStop!', 'color: red; font-size: 50px; font-weight: bold;');
+                    console.log('%cThis is a browser feature intended for developers. Unauthorized access is prohibited.', 'color: red; font-size: 16px;');
+                }
+            } else {
+                devtools.open = false;
+            }
+        }, 500);
+    </script>
+</body>
+</html>
+

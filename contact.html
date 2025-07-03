@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Dr. Academic Name</title>
+    <meta name="description" content="Contact information, office hours, and location for Dr. Academic Name">
+    <meta name="keywords" content="contact, office hours, location, email, phone, university">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourusername.github.io/contact.html">
+    <meta property="og:title" content="Contact - Dr. Academic Name">
+    <meta property="og:description" content="Contact information, office hours, and location for Dr. Academic Name">
+    <meta property="og:image" content="assets/images/profile.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">Dr. Academic Name</a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html">Home</a></li>
+                <li class="nav-item"><a href="about.html">About</a></li>
+                <li class="nav-item"><a href="research.html">Research</a></li>
+                <li class="nav-item"><a href="teaching.html">Teaching</a></li>
+                <li class="nav-item"><a href="cv.html">CV</a></li>
+                <li class="nav-item"><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-toggle">☰</button>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="hero" style="padding: calc(80px + 2rem) 0 2rem;">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Contact Me</h1>
+                <p class="hero-subtitle">Let's Connect and Collaborate</p>
+                <p class="hero-description">
+                    I'm always interested in discussing research opportunities, potential collaborations, 
+                    or academic partnerships. Students are welcome during office hours or by appointment.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Information -->
+    <section class="section">
+        <div class="container">
+            <div class="grid grid-2" style="margin-bottom: 3rem;">
+                <!-- Contact Details -->
+                <div class="card">
+                    <h3 class="card-title">📍 Office Location</h3>
+                    <p>
+                        <strong>Department of Computer Science</strong><br>
+                        University Name<br>
+                        123 Academic Building, Room 456<br>
+                        University City, State 12345
+                    </p>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="https://maps.google.com" target="_blank" class="btn btn-primary">View on Map</a>
+                    </div>
+                </div>
+
+                <!-- Contact Methods -->
+                <div class="card">
+                    <h3 class="card-title">📞 Contact Information</h3>
+                    <p>
+                        <strong>Email:</strong> <a href="mailto:academic@university.edu" data-contact="email">academic@university.edu</a><br>
+                        <strong>Phone:</strong> <span data-contact="phone">(555) 123-4567</span><br>
+                        <strong>Office Hours:</strong> <span data-contact="office-hours">MW 2-4 PM, F 10-12 PM</span><br>
+                        <strong>Zoom Office Hours:</strong> <a href="https://zoom.us/j/123456789" target="_blank">Join Meeting</a>
+                    </p>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="mailto:academic@university.edu" class="btn btn-primary">Send Email</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Office Hours Schedule -->
+            <div class="card" style="margin-bottom: 3rem;">
+                <h3 class="card-title">🕒 Office Hours Schedule</h3>
+                <div class="grid grid-2">
+                    <div>
+                        <h4>Regular Office Hours</h4>
+                        <ul style="margin-left: 1.5rem;">
+                            <li><strong>Monday:</strong> 2:00 PM - 4:00 PM (In-person)</li>
+                            <li><strong>Wednesday:</strong> 2:00 PM - 4:00 PM (In-person)</li>
+                            <li><strong>Friday:</strong> 10:00 AM - 12:00 PM (Virtual/Zoom)</li>
+                        </ul>
+                        <p style="margin-top: 1rem;">
+                            <em>No appointment necessary during regular office hours. 
+                            For meetings outside these times, please email to schedule.</em>
+                        </p>
+                    </div>
+                    <div>
+                        <h4>Special Availability</h4>
+                        <ul style="margin-left: 1.5rem;">
+                            <li><strong>Research Students:</strong> By appointment</li>
+                            <li><strong>Prospective Students:</strong> Fridays 1-2 PM</li>
+                            <li><strong>Industry Collaborations:</strong> By appointment</li>
+                            <li><strong>Media Inquiries:</strong> By appointment</li>
+                        </ul>
+                        <p style="margin-top: 1rem;">
+                            <em>During exam periods and holidays, office hours may be adjusted. 
+                            Check course websites for updates.</em>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="content-grid">
+                <div class="card">
+                    <h3 class="card-title">💬 Send a Message</h3>
+                    <form id="contact-form" style="margin-top: 1.5rem;">
+                        <div style="margin-bottom: 1rem;">
+                            <label for="name" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Name *</label>
+                            <input type="text" id="name" name="name" required 
+                                   style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem;">
+                        </div>
+                        
+                        <div style="margin-bottom: 1rem;">
+                            <label for="email" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Email *</label>
+                            <input type="email" id="email" name="email" required 
+                                   style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem;">
+                        </div>
+                        
+                        <div style="margin-bottom: 1rem;">
+                            <label for="subject" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Subject</label>
+                            <select id="subject" name="subject" 
+                                    style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem;">
+                                <option value="">Select a topic...</option>
+                                <option value="research">Research Collaboration</option>
+                                <option value="student">Student Inquiry</option>
+                                <option value="teaching">Teaching/Course Question</option>
+                                <option value="media">Media/Interview Request</option>
+                                <option value="speaking">Speaking Engagement</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div style="margin-bottom: 1rem;">
+                            <label for="affiliation" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Affiliation</label>
+                            <input type="text" id="affiliation" name="affiliation" placeholder="University, Company, or Organization"
+                                   style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem;">
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label for="message" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Message *</label>
+                            <textarea id="message" name="message" rows="6" required placeholder="Please describe your inquiry or message..."
+                                      style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem; resize: vertical;"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                    </form>
+                    
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: #f0f9ff; border-radius: var(--radius-md); border-left: 4px solid var(--primary-color);">
+                        <p style="margin: 0; font-size: 0.875rem; color: var(--text-light);">
+                            <strong>Note:</strong> This is a demonstration contact form. In a real implementation, 
+                            this would be connected to a backend service or email system. For now, it will show 
+                            a confirmation message when submitted.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Quick Contact & Social -->
+                <div>
+                    <div class="card" style="margin-bottom: 2rem;">
+                        <h3 class="card-title">🔗 Academic Profiles</h3>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <a href="https://scholar.google.com" target="_blank" 
+                               style="display: flex; align-items: center; padding: 0.75rem; background: #f8fafc; border-radius: var(--radius-md); text-decoration: none; transition: background var(--transition-fast);"
+                               onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f8fafc'">
+                                <span style="margin-right: 0.75rem; font-size: 1.25rem;">🎓</span>
+                                <span>Google Scholar</span>
+                            </a>
+                            <a href="https://orcid.org" target="_blank" 
+                               style="display: flex; align-items: center; padding: 0.75rem; background: #f8fafc; border-radius: var(--radius-md); text-decoration: none; transition: background var(--transition-fast);"
+                               onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f8fafc'">
+                                <span style="margin-right: 0.75rem; font-size: 1.25rem;">🆔</span>
+                                <span>ORCID</span>
+                            </a>
+                            <a href="https://linkedin.com" target="_blank" 
+                               style="display: flex; align-items: center; padding: 0.75rem; background: #f8fafc; border-radius: var(--radius-md); text-decoration: none; transition: background var(--transition-fast);"
+                               onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f8fafc'">
+                                <span style="margin-right: 0.75rem; font-size: 1.25rem;">💼</span>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="https://researchgate.net" target="_blank" 
+                               style="display: flex; align-items: center; padding: 0.75rem; background: #f8fafc; border-radius: var(--radius-md); text-decoration: none; transition: background var(--transition-fast);"
+                               onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f8fafc'">
+                                <span style="margin-right: 0.75rem; font-size: 1.25rem;">🔬</span>
+                                <span>ResearchGate</span>
+                            </a>
+                            <a href="https://twitter.com" target="_blank" 
+                               style="display: flex; align-items: center; padding: 0.75rem; background: #f8fafc; border-radius: var(--radius-md); text-decoration: none; transition: background var(--transition-fast);"
+                               onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f8fafc'">
+                                <span style="margin-right: 0.75rem; font-size: 1.25rem;">🐦</span>
+                                <span>Twitter</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title">📅 Schedule a Meeting</h3>
+                        <p>For longer discussions or research collaborations, you can schedule a dedicated meeting:</p>
+                        <div style="margin-top: 1rem;">
+                            <a href="https://calendly.com" target="_blank" class="btn btn-primary" style="width: 100%; text-align: center;">
+                                Schedule on Calendly
+                            </a>
+                        </div>
+                        <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--text-light);">
+                            Available time slots: 30-minute or 60-minute meetings during business hours.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section" style="background: #f8fafc;">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3 class="card-title">For Prospective Students</h3>
+                    <div style="margin-bottom: 1rem;">
+                        <strong>Q: Are you accepting new Ph.D. students?</strong><br>
+                        A: Yes, I typically accept 1-2 new Ph.D. students each year. Please review my research areas and recent publications before reaching out.
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <strong>Q: What should I include in my inquiry email?</strong><br>
+                        A: Please include your CV, research interests, relevant experience, and specific reasons for wanting to work with me.
+                    </div>
+                    <div>
+                        <strong>Q: Do you offer undergraduate research opportunities?</strong><br>
+                        A: Yes, I work with motivated undergraduates on research projects. Strong programming skills and relevant coursework are preferred.
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title">For Collaborators</h3>
+                    <div style="margin-bottom: 1rem;">
+                        <strong>Q: What types of collaborations are you interested in?</strong><br>
+                        A: I'm open to academic collaborations, industry partnerships, and interdisciplinary projects related to AI ethics and healthcare AI.
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <strong>Q: Do you consult for industry?</strong><br>
+                        A: I occasionally provide consulting services for projects aligned with my research expertise. Please email for details.
+                    </div>
+                    <div>
+                        <strong>Q: Are you available for speaking engagements?</strong><br>
+                        A: Yes, I speak at conferences, workshops, and industry events. Please provide event details and timeline when inquiring.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Map -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Campus Location</h2>
+            <div class="card">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
+                    <div>
+                        <h3>Getting to My Office</h3>
+                        <p><strong>Building:</strong> Academic Building (Building 123)</p>
+                        <p><strong>Floor:</strong> 4th Floor</p>
+                        <p><strong>Room:</strong> 456</p>
+                        <p><strong>Parking:</strong> Visitor parking available in Lot C</p>
+                        <p><strong>Public Transit:</strong> Campus shuttle stops at Academic Circle</p>
+                        
+                        <div style="margin-top: 1.5rem;">
+                            <h4>Directions from Main Entrance:</h4>
+                            <ol style="margin-left: 1.5rem;">
+                                <li>Enter through the main lobby</li>
+                                <li>Take the elevator to the 4th floor</li>
+                                <li>Turn right and follow the hallway</li>
+                                <li>Room 456 is on the left side</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div style="background: #e5e7eb; height: 300px; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; color: var(--text-light);">
+                        <div style="text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">🗺️</div>
+                            <p>Interactive Campus Map</p>
+                            <p style="font-size: 0.875rem;">In a real implementation, this would show an embedded Google Maps or campus map</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="research.html">Research</a>
+                    <a href="teaching.html">Teaching</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <a href="mailto:academic@university.edu">Email</a>
+                    <a href="tel:+15551234567">Phone</a>
+                    <a href="#office-hours">Office Hours</a>
+                    <a href="https://calendly.com" target="_blank">Schedule Meeting</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Academic Profiles</h4>
+                    <a href="https://scholar.google.com" target="_blank">Google Scholar</a>
+                    <a href="https://orcid.org" target="_blank">ORCID</a>
+                    <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+                    <a href="https://researchgate.net" target="_blank">ResearchGate</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Institution</h4>
+                    <a href="https://university.edu" target="_blank">University Name</a>
+                    <a href="https://cs.university.edu" target="_blank">Computer Science Dept.</a>
+                    <a href="https://maps.google.com" target="_blank">Campus Map</a>
+                    <a href="https://university.edu/directory" target="_blank">Directory</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Dr. Academic Name. All rights reserved. | Built with modern web technologies.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+</body>
+</html>
+

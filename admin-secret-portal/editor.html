@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Editor - Academic Website CMS</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Content editor for academic website CMS">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <a href="dashboard.html" class="admin-logo">Academic CMS</a>
+                <div class="admin-user-info">
+                    <span id="current-user">Loading...</span>
+                </div>
+            </div>
+            
+            <nav class="admin-nav">
+                <div class="admin-nav-section">
+                    <div class="admin-nav-title">Overview</div>
+                    <ul class="admin-nav-list">
+                        <li class="admin-nav-item">
+                            <a href="dashboard.html" class="admin-nav-link">
+                                <span class="admin-nav-icon">📊</span>
+                                Dashboard
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="admin-nav-section">
+                    <div class="admin-nav-title">Content Management</div>
+                    <ul class="admin-nav-list">
+                        <li class="admin-nav-item">
+                            <a href="editor.html?page=index" class="admin-nav-link" data-page="index">
+                                <span class="admin-nav-icon">🏠</span>
+                                Homepage
+                            </a>
+                        </li>
+                        <li class="admin-nav-item">
+                            <a href="editor.html?page=about" class="admin-nav-link" data-page="about">
+                                <span class="admin-nav-icon">👤</span>
+                                About Page
+                            </a>
+                        </li>
+                        <li class="admin-nav-item">
+                            <a href="editor.html?page=research" class="admin-nav-link" data-page="research">
+                                <span class="admin-nav-icon">🔬</span>
+                                Research
+                            </a>
+                        </li>
+                        <li class="admin-nav-item">
+                            <a href="editor.html?page=teaching" class="admin-nav-link" data-page="teaching">
+                                <span class="admin-nav-icon">📚</span>
+                                Teaching
+                            </a>
+                        </li>
+                        <li class="admin-nav-item">
+                            <a href="editor.html?page=contact" class="admin-nav-link" data-page="contact">
+                                <span class="admin-nav-icon">📞</span>
+                                Contact
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="admin-nav-section">
+                    <div class="admin-nav-title">Site Management</div>
+                    <ul class="admin-nav-list">
+                        <li class="admin-nav-item">
+                            <a href="editor.html?page=site" class="admin-nav-link" data-page="site">
+                                <span class="admin-nav-icon">⚙️</span>
+                                Site Settings
+                            </a>
+                        </li>
+                        <li class="admin-nav-item">
+                            <a href="#" class="admin-nav-link" onclick="previewSite()">
+                                <span class="admin-nav-icon">👁️</span>
+                                Preview Site
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="admin-nav-section">
+                    <div class="admin-nav-title">Account</div>
+                    <ul class="admin-nav-list">
+                        <li class="admin-nav-item">
+                            <a href="#" class="admin-nav-link" onclick="logout()">
+                                <span class="admin-nav-icon">🚪</span>
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1 class="admin-header-title" id="page-title">Content Editor</h1>
+                <div class="admin-header-actions">
+                    <button class="admin-btn admin-btn-outline admin-btn-sm" onclick="resetToDefaults()">
+                        <span>🔄</span>
+                        Reset to Defaults
+                    </button>
+                    <button class="admin-btn admin-btn-secondary admin-btn-sm" onclick="previewSite()">
+                        <span>👁️</span>
+                        Preview
+                    </button>
+                    <button class="admin-btn admin-btn-success admin-btn-sm" onclick="saveContent()">
+                        <span>💾</span>
+                        Save Changes
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Auto-save indicator -->
+            <div id="autosave-indicator" class="admin-alert admin-alert-success admin-hidden">
+                <strong>Auto-saved</strong> - Your changes have been automatically saved.
+            </div>
+            
+            <!-- Content Editor Container -->
+            <div id="editor-container" class="content-editor">
+                <!-- Content will be dynamically loaded here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/cms.js"></script>
+    <script>
+        let currentPage = 'index';
+        let autoSaveTimer = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            if (!window.academicCMS || !window.academicCMS.isAuthenticated()) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Update user info
+            const currentUser = document.getElementById('current-user');
+            if (window.academicCMS.currentUser) {
+                currentUser.textContent = `Logged in as ${window.academicCMS.currentUser.username}`;
+            }
+            
+            // Get page from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            currentPage = urlParams.get('page') || 'index';
+            
+            // Update navigation
+            updateNavigation();
+            
+            // Load editor for current page
+            loadEditor(currentPage);
+            
+            // Setup auto-save
+            setupAutoSave();
+        });
+        
+        function updateNavigation() {
+            // Remove active class from all nav links
+            document.querySelectorAll('.admin-nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Add active class to current page
+            const currentLink = document.querySelector(`[data-page="${currentPage}"]`);
+            if (currentLink) {
+                currentLink.classList.add('active');
+            }
+        }
+        
+        function loadEditor(page) {
+            const container = document.getElementById('editor-container');
+            const pageTitle = document.getElementById('page-title');
+            
+            // Update page title
+            const pageTitles = {
+                'index': 'Homepage Editor',
+                'about': 'About Page Editor',
+                'research': 'Research Page Editor',
+                'teaching': 'Teaching Page Editor',
+                'contact': 'Contact Page Editor',
+                'site': 'Site Settings'
+            };
+            pageTitle.textContent = pageTitles[page] || 'Content Editor';
+            
+            // Load content for the page
+            const content = window.academicCMS.getContent(page);
+            
+            // Generate editor based on page type
+            switch (page) {
+                case 'index':
+                    container.innerHTML = generateHomepageEditor(content);
+                    break;
+                case 'about':
+                    container.innerHTML = generateAboutEditor(content);
+                    break;
+                case 'research':
+                    container.innerHTML = generateResearchEditor(content);
+                    break;
+                case 'teaching':
+                    container.innerHTML = generateTeachingEditor(content);
+                    break;
+                case 'contact':
+                    container.innerHTML = generateContactEditor(content);
+                    break;
+                case 'site':
+                    container.innerHTML = generateSiteEditor(content);
+                    break;
+                default:
+                    container.innerHTML = '<div class="admin-alert admin-alert-danger">Page not found</div>';
+            }
+            
+            // Initialize rich text editors
+            initializeRichTextEditors();
+        }
+        
+        function generateHomepageEditor(content) {
+            return `
+                <form class="cms-form" data-page="index">
+                    <div class="editor-section">
+                        <h2 class="editor-section-title">Hero Section</h2>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Title</label>
+                            <input type="text" name="title" class="admin-form-input cms-field" value="${content.title || ''}" placeholder="Dr. Academic Name">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Subtitle</label>
+                            <input type="text" name="subtitle" class="admin-form-input cms-field" value="${content.subtitle || ''}" placeholder="Assistant Professor of Computer Science">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Description</label>
+                            <textarea name="description" class="admin-form-textarea cms-field" rows="4" placeholder="Welcome message and brief introduction">${content.description || ''}</textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="editor-section">
+                        <h2 class="editor-section-title">Recent News</h2>
+                        <div id="news-list">
+                            ${generateNewsList(content.recentNews || [])}
+                        </div>
+                        <button type="button" class="admin-btn admin-btn-outline add-item-btn" onclick="addNewsItem()">
+                            <span>➕</span> Add News Item
+                        </button>
+                    </div>
+                </form>
+            `;
+        }
+        
+        function generateAboutEditor(content) {
+            return `
+                <form class="cms-form" data-page="about">
+                    <div class="editor-section">
+                        <h2 class="editor-section-title">Page Header</h2>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Title</label>
+                            <input type="text" name="title" class="admin-form-input cms-field" value="${content.title || ''}" placeholder="About Me">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Subtitle</label>
+                            <input type="text" name="subtitle" class="admin-form-input cms-field" value="${content.subtitle || ''}" placeholder="Academic Journey & Background">
+                        </div>
+                    </div>
+                    
+                    <div class="editor-section">
+                        <h2 class="editor-section-title">Biography</h2>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Biography Content</label>
+                            <div id="biography-editor" class="rich-text-container"></div>
+                            <textarea name="biography" class="admin-form-textarea cms-field admin-hidden" rows="10">${content.biography || ''}</textarea>
+                            <div class="admin-form-help">Use the rich text editor above to format your biography with paragraphs, lists, and links.</div>
+                        </div>
+                    </div>
+                </form>
+            `;
+        }
+        
+        function generateResearchEditor(content) {
+            return `
+                <form class="cms-form" data-page="research">
+                    <div class="editor-section">
+                        <h2 class="editor-section-title">Page Header</h2>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Title</label>
+                            <input type="text" name="title" class="admin-form-input cms-field" value="${content.title || ''}" placeholder="Research">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Subtitle</label>
+                            <input type="text" name="subtitle" class="admin-form-input cms-field" value="${content.subtitle || ''}" placeholder="Publications, Projects & Expertise">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Description</label>
+                            <textarea name="description" class="admin-form-textarea cms-field" rows="3">${content.description || ''}</textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="editor-section">
+                        <h2 class="editor-section-title">Publications</h2>
+                        <div id="publications-list">
+                            ${generatePublicationsList(content.publications || [])}
+                        </div>
+                        <button type="button" class="admin-btn admin-btn-outline add-item-btn" onclick="addPublication()">
+                            <span>➕</span> Add Publication
+                        </button>
+                    </div>
+                </form>
+            `;
+        }
+        
+        function generateTeachingEditor(content) {
+            return `
+                <form class="cms-form" data-page="teaching">
+                    <div class="editor-section">
+                        <h2 class="editor-section-title">Page Header</h2>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Title</label>
+                            <input type="text" name="title" class="admin-form-input cms-field" value="${content.title || ''}" placeholder="Teaching">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Subtitle</label>
+                            <input type="text" name="subtitle" class="admin-form-input cms-field" value="${content.subtitle || ''}" placeholder="Inspiring the Next Generation">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Description</label>
+                            <textarea name="description" class="admin-form-textarea cms-field" rows="3">${content.description || ''}</textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="editor-section">
+                        <h2 class="editor-section-title">Courses</h2>
+                        <div id="courses-list">
+                            ${generateCoursesList(content.courses || [])}
+                        </div>
+                        <button type="button" class="admin-btn admin-btn-outline add-item-btn" onclick="addCourse()">
+                            <span>➕</span> Add Course
+                        </button>
+                    </div>
+                </form>
+            `;
+        }
+        
+        function generateContactEditor(content) {
+            return `
+                <form class="cms-form" data-page="contact">
+                    <div class="editor-section">
+                        <h2 class="editor-section-title">Page Header</h2>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Title</label>
+                            <input type="text" name="title" class="admin-form-input cms-field" value="${content.title || ''}" placeholder="Contact Me">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Subtitle</label>
+                            <input type="text" name="subtitle" class="admin-form-input cms-field" value="${content.subtitle || ''}" placeholder="Let's Connect and Collaborate">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Description</label>
+                            <textarea name="description" class="admin-form-textarea cms-field" rows="3">${content.description || ''}</textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="editor-section">
+                        <h2 class="editor-section-title">Contact Information</h2>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Email</label>
+                            <input type="email" name="contactInfo.email" class="admin-form-input cms-field" value="${content.contactInfo?.email || ''}" placeholder="academic@university.edu">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Phone</label>
+                            <input type="text" name="contactInfo.phone" class="admin-form-input cms-field" value="${content.contactInfo?.phone || ''}" placeholder="(555) 123-4567">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Office Hours</label>
+                            <input type="text" name="contactInfo.office-hours" class="admin-form-input cms-field" value="${content.contactInfo?.['office-hours'] || ''}" placeholder="MW 2-4 PM, F 10-12 PM">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Office Location</label>
+                            <input type="text" name="contactInfo.office" class="admin-form-input cms-field" value="${content.contactInfo?.office || ''}" placeholder="Room 456, Academic Building">
+                        </div>
+                    </div>
+                </form>
+            `;
+        }
+        
+        function generateSiteEditor(content) {
+            const siteContent = window.academicCMS.getContent('site');
+            return `
+                <form class="cms-form" data-page="site">
+                    <div class="editor-section">
+                        <h2 class="editor-section-title">Site Information</h2>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Site Title</label>
+                            <input type="text" name="title" class="admin-form-input cms-field" value="${siteContent.title || ''}" placeholder="Dr. Academic Name">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Subtitle</label>
+                            <input type="text" name="subtitle" class="admin-form-input cms-field" value="${siteContent.subtitle || ''}" placeholder="Assistant Professor of Computer Science">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">University</label>
+                            <input type="text" name="university" class="admin-form-input cms-field" value="${siteContent.university || ''}" placeholder="University Name">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Email</label>
+                            <input type="email" name="email" class="admin-form-input cms-field" value="${siteContent.email || ''}" placeholder="academic@university.edu">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Phone</label>
+                            <input type="text" name="phone" class="admin-form-input cms-field" value="${siteContent.phone || ''}" placeholder="(555) 123-4567">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Office</label>
+                            <input type="text" name="office" class="admin-form-input cms-field" value="${siteContent.office || ''}" placeholder="Room 456, Academic Building">
+                        </div>
+                    </div>
+                </form>
+            `;
+        }
+        
+        function generateNewsList(news) {
+            if (!news || news.length === 0) {
+                return '<div class="admin-alert admin-alert-info">No news items yet. Add your first news item!</div>';
+            }
+            
+            return news.map((item, index) => `
+                <div class="dynamic-list-item">
+                    <div class="dynamic-list-content">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Date</label>
+                            <input type="text" name="recentNews[${index}].date" class="admin-form-input cms-field" value="${item.date || ''}" placeholder="December 2024">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Title</label>
+                            <input type="text" name="recentNews[${index}].title" class="admin-form-input cms-field" value="${item.title || ''}" placeholder="News title">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Summary</label>
+                            <textarea name="recentNews[${index}].summary" class="admin-form-textarea cms-field" rows="2" placeholder="Brief summary of the news">${item.summary || ''}</textarea>
+                        </div>
+                    </div>
+                    <div class="dynamic-list-actions">
+                        <button type="button" class="admin-btn admin-btn-danger admin-btn-sm" onclick="removeNewsItem(${index})">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function generatePublicationsList(publications) {
+            if (!publications || publications.length === 0) {
+                return '<div class="admin-alert admin-alert-info">No publications yet. Add your first publication!</div>';
+            }
+            
+            return publications.map((pub, index) => `
+                <div class="dynamic-list-item">
+                    <div class="dynamic-list-content">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Title</label>
+                            <input type="text" name="publications[${index}].title" class="admin-form-input cms-field" value="${pub.title || ''}" placeholder="Publication title">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Authors</label>
+                            <input type="text" name="publications[${index}].authors" class="admin-form-input cms-field" value="${pub.authors || ''}" placeholder="Author names">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Venue</label>
+                            <input type="text" name="publications[${index}].venue" class="admin-form-input cms-field" value="${pub.venue || ''}" placeholder="Journal or conference name">
+                        </div>
+                    </div>
+                    <div class="dynamic-list-actions">
+                        <button type="button" class="admin-btn admin-btn-danger admin-btn-sm" onclick="removePublication(${index})">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function generateCoursesList(courses) {
+            if (!courses || courses.length === 0) {
+                return '<div class="admin-alert admin-alert-info">No courses yet. Add your first course!</div>';
+            }
+            
+            return courses.map((course, index) => `
+                <div class="dynamic-list-item">
+                    <div class="dynamic-list-content">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Course Title</label>
+                            <input type="text" name="courses[${index}].title" class="admin-form-input cms-field" value="${course.title || ''}" placeholder="CS 4780: Machine Learning">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Semester</label>
+                            <input type="text" name="courses[${index}].semester" class="admin-form-input cms-field" value="${course.semester || ''}" placeholder="Spring 2025">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Level</label>
+                            <select name="courses[${index}].level" class="admin-form-select cms-field">
+                                <option value="Undergraduate" ${course.level === 'Undergraduate' ? 'selected' : ''}>Undergraduate</option>
+                                <option value="Graduate" ${course.level === 'Graduate' ? 'selected' : ''}>Graduate</option>
+                            </select>
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Description</label>
+                            <textarea name="courses[${index}].description" class="admin-form-textarea cms-field" rows="2" placeholder="Course description">${course.description || ''}</textarea>
+                        </div>
+                    </div>
+                    <div class="dynamic-list-actions">
+                        <button type="button" class="admin-btn admin-btn-danger admin-btn-sm" onclick="removeCourse(${index})">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function initializeRichTextEditors() {
+            const biographyEditor = document.getElementById('biography-editor');
+            if (biographyEditor) {
+                const textarea = document.querySelector('textarea[name="biography"]');
+                const editor = window.academicCMS.createRichTextEditor(biographyEditor, textarea.value);
+                
+                // Sync rich text editor with textarea
+                editor.addEventListener('input', function() {
+                    textarea.value = editor.innerHTML;
+                    textarea.dispatchEvent(new Event('input'));
+                });
+            }
+        }
+        
+        function setupAutoSave() {
+            document.addEventListener('input', function(e) {
+                if (e.target.classList.contains('cms-field')) {
+                    clearTimeout(autoSaveTimer);
+                    autoSaveTimer = setTimeout(function() {
+                        saveContent(true); // true for auto-save
+                    }, 2000);
+                }
+            });
+        }
+        
+        function saveContent(isAutoSave = false) {
+            const form = document.querySelector('.cms-form');
+            if (!form) return;
+            
+            const formData = new FormData(form);
+            const data = {};
+            
+            // Process form data
+            for (let [key, value] of formData.entries()) {
+                setNestedProperty(data, key, value);
+            }
+            
+            // Handle arrays (news, publications, courses)
+            processArrayFields(data);
+            
+            // Save to CMS
+            window.academicCMS.updateContent(currentPage, data);
+            
+            // Show feedback
+            if (isAutoSave) {
+                showAutoSaveIndicator();
+            } else {
+                window.academicCMS.showNotification('Content saved successfully!', 'success');
+            }
+        }
+        
+        function setNestedProperty(obj, path, value) {
+            const keys = path.split('.');
+            let current = obj;
+            
+            for (let i = 0; i < keys.length - 1; i++) {
+                const key = keys[i];
+                if (!(key in current)) {
+                    current[key] = {};
+                }
+                current = current[key];
+            }
+            
+            current[keys[keys.length - 1]] = value;
+        }
+        
+        function processArrayFields(data) {
+            // Process recentNews array
+            if (data.recentNews) {
+                const newsArray = [];
+                Object.keys(data.recentNews).forEach(index => {
+                    if (data.recentNews[index]) {
+                        newsArray[parseInt(index)] = data.recentNews[index];
+                    }
+                });
+                data.recentNews = newsArray.filter(item => item);
+            }
+            
+            // Process publications array
+            if (data.publications) {
+                const pubArray = [];
+                Object.keys(data.publications).forEach(index => {
+                    if (data.publications[index]) {
+                        pubArray[parseInt(index)] = data.publications[index];
+                    }
+                });
+                data.publications = pubArray.filter(item => item);
+            }
+            
+            // Process courses array
+            if (data.courses) {
+                const coursesArray = [];
+                Object.keys(data.courses).forEach(index => {
+                    if (data.courses[index]) {
+                        coursesArray[parseInt(index)] = data.courses[index];
+                    }
+                });
+                data.courses = coursesArray.filter(item => item);
+            }
+        }
+        
+        function showAutoSaveIndicator() {
+            const indicator = document.getElementById('autosave-indicator');
+            indicator.classList.remove('admin-hidden');
+            setTimeout(() => {
+                indicator.classList.add('admin-hidden');
+            }, 2000);
+        }
+        
+        function addNewsItem() {
+            const content = window.academicCMS.getContent(currentPage);
+            if (!content.recentNews) content.recentNews = [];
+            content.recentNews.push({ date: '', title: '', summary: '' });
+            window.academicCMS.updateContent(currentPage, content);
+            loadEditor(currentPage);
+        }
+        
+        function removeNewsItem(index) {
+            const content = window.academicCMS.getContent(currentPage);
+            if (content.recentNews) {
+                content.recentNews.splice(index, 1);
+                window.academicCMS.updateContent(currentPage, content);
+                loadEditor(currentPage);
+            }
+        }
+        
+        function addPublication() {
+            const content = window.academicCMS.getContent(currentPage);
+            if (!content.publications) content.publications = [];
+            content.publications.push({ title: '', authors: '', venue: '', links: [] });
+            window.academicCMS.updateContent(currentPage, content);
+            loadEditor(currentPage);
+        }
+        
+        function removePublication(index) {
+            const content = window.academicCMS.getContent(currentPage);
+            if (content.publications) {
+                content.publications.splice(index, 1);
+                window.academicCMS.updateContent(currentPage, content);
+                loadEditor(currentPage);
+            }
+        }
+        
+        function addCourse() {
+            const content = window.academicCMS.getContent(currentPage);
+            if (!content.courses) content.courses = [];
+            content.courses.push({ title: '', semester: '', level: 'Undergraduate', description: '' });
+            window.academicCMS.updateContent(currentPage, content);
+            loadEditor(currentPage);
+        }
+        
+        function removeCourse(index) {
+            const content = window.academicCMS.getContent(currentPage);
+            if (content.courses) {
+                content.courses.splice(index, 1);
+                window.academicCMS.updateContent(currentPage, content);
+                loadEditor(currentPage);
+            }
+        }
+        
+        function resetToDefaults() {
+            if (confirm('Are you sure you want to reset this page to default content? This action cannot be undone.')) {
+                const defaultContent = window.academicCMS.getDefaultContent();
+                window.academicCMS.updateContent(currentPage, defaultContent[currentPage]);
+                loadEditor(currentPage);
+                window.academicCMS.showNotification('Page reset to defaults', 'success');
+            }
+        }
+        
+        function previewSite() {
+            window.academicCMS.previewChanges();
+        }
+        
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.academicCMS.logout();
+            }
+        }
+    </script>
+</body>
+</html>
+
